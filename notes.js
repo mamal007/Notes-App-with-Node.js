@@ -4,9 +4,9 @@ const chalk = require("chalk");
 const addNote = (title, body) => {
   const notes = loadNotes();
 
-  const duplicateNotes = notes.filter((note) => note.title === title);
+  const duplicateNote = notes.find((note) => note.title === title);
 
-  if (duplicateNotes.length === 0) {
+  if (!duplicateNote) {
     const note = {
       title: title,
       body: body,
@@ -24,8 +24,8 @@ const addNote = (title, body) => {
 const removeNote = (title) => {
   let notes = loadNotes();
   if (notes.length === 0) {
-      console.log(chalk.yellow.inverse("Your list is empty!"));
-      return 0;
+    console.log(chalk.yellow.inverse("Your list is empty!"));
+    return 0;
   }
 
   const notesToKeep = notes.filter((note) => note.title !== title);
@@ -36,6 +36,39 @@ const removeNote = (title) => {
   } else {
     console.log(chalk.red.inverse("The target note not found!"));
   }
+};
+
+const readNote = (title) => {
+  const notes = loadNotes();
+  if (notes.length === 0) {
+    console.log(chalk.yellow.inverse("Your list is empty!"));
+    return 0;
+  }
+
+  const targetNote = notes.find((note) => note.title === title);
+
+  if (targetNote) {
+      console.log(chalk.blue(`title: ${targetNote.title} || body: ${targetNote.body}`));
+  } else {
+      console.log(chalk.red.inverse("Note not found!"))
+  }
+};
+
+const listNotes = () => {
+  const notes = loadNotes();
+  if (notes.length === 0) {
+    console.log(chalk.yellow.inverse("Your list is empty!"));
+    return 0;
+  }
+  notes.forEach((note) =>
+    console.log(
+      chalk.blue(
+        `${
+          notes.indexOf((notesNode) => notes.title === note.title) + 2
+        }- title: ${note.title} || body: ${note.body}`
+      )
+    )
+  );
 };
 
 const loadNotes = () => {
@@ -57,4 +90,6 @@ const saveNotes = (notes) => {
 module.exports = {
   addNote: addNote,
   removeNote: removeNote,
+  listNotes: listNotes,
+  readNote: readNote,
 };
