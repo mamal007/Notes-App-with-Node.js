@@ -1,39 +1,59 @@
-const yargs = require('yargs');
+const yargs = require("yargs");
+const notes = require("./notes");
 
 //Adding "add" command
 yargs.command({
-    command: 'add',
-    describe: 'adding a new note',
-    handler: function () {
-        console.log('added a note')
-    }
-})
+  command: "add",
+  describe: "adding a new note",
+  builder: {
+    title: {
+      describe: "title of the note",
+      demandOption: true,
+      type: "string",
+    },
+    body: {
+      describe: "description of the note",
+      demandOption: true,
+      type: "string",
+    },
+  },
+  handler: function (argv) {
+    notes.addNote(argv.title, argv.body);
+  },
+});
 
-//Adding "remove" command
+//Creating "remove" command
 yargs.command({
-    command: 'remove',
-    describe: 'removing a note',
-    handler: function () {
-        console.log('removed a note')
-    }
-})
+  command: "remove",
+  describe: "removing a note",
+  builder: {
+    title: {
+      describe: "title of the note",
+      demandOption: true,
+      type: "string",
+    },
+  },
+  handler: function (argv) {
+    notes.removeNote(argv.title);
+  },
+});
 
-//Adding "list" command
+//Creating "list" command
 yargs.command({
-    command: 'list',
-    describe: 'listing notes',
-    handler: function () {
-        console.log('listed notes')
-    }
-})
+  command: "list",
+  describe: "listing notes",
+  handler: function () {
+    console.log();
+  },
+});
 
-//Adding "read" command
+//Creating "read" command
 yargs.command({
-    command: 'read',
-    describe: 'reading notes',
-    handler: function () {
-        console.log('read notes')
-    }
-})
+  command: "read",
+  describe: "reading notes",
+  handler: function () {
+    console.log("read notes");
+  },
+});
 
-console.log(yargs.argv)
+yargs.parse();
